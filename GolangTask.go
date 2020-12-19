@@ -9,6 +9,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+//records struct
+
 type Records struct {
 	PID   string
 	Name  string
@@ -17,11 +19,11 @@ type Records struct {
 }
 
 func main() {
-	fmt.Println("Go MySQL Tutorial")
-
+	//reading csv file
 	reader := csv.NewReader(file)
 	records, _ := reader.ReadAll()
 
+	//iterating through the records
 	for _, records := range records {
 		data := Records{
 			PID:   records[0],
@@ -29,16 +31,17 @@ func main() {
 			email: records[2],
 			phone: records[3],
 		}
-		//fmt.Println(data.PID + " " + data.Name + " " + data.email + " " + data.phone)
+		fmt.Println(data.PID + " " + data.Name + " " + data.email + " " + data.phone)
 
 	}
-
+	//sql connection
 	db, err := sql.Open("mysql", "root:9999@tcp(127.0.0.1:3306)/testdb")
 
 	file, err := os.Open("C://Users/Hassan/Desktop/people.csv")
 	if err != nil {
 		fmt.Println(err)
 	}
+	//sql insert operation
 	rows, err := db.Query("INSERT INTO users (PID,Name,email phone) VALUES (?, ?, ?, ?)")
 	if err != nil {
 		panic(err)
